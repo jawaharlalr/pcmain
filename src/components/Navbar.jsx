@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { ShoppingCart, Search, Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
-import products from "../data/products"; // ✅ Import products
+import products from "../data/products";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -10,8 +10,6 @@ const Navbar = () => {
   const { cart } = useContext(CartContext);
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-
-  // ✅ Get unique categories from products
   const uniqueCategories = [...new Set(products.map(p => p.category))];
 
   return (
@@ -67,7 +65,6 @@ const Navbar = () => {
           HOME
         </Link>
 
-        {/* ✅ Dynamic CATEGORY Dropdown */}
         <div className="relative inline-block">
           <button
             onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
