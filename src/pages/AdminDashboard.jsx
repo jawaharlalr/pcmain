@@ -1,4 +1,3 @@
-// src/pages/AdminDashboard.jsx
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
@@ -6,11 +5,12 @@ import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
   const [orders, setOrders] = useState([]);
+  const [filteredOrders, setFilteredOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchOrderId, setSearchOrderId] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    // ✅ Access protection
     const isAdmin = localStorage.getItem("isAdmin");
     if (isAdmin !== "true") {
       alert("Access denied. Admins only.");
@@ -18,7 +18,6 @@ const AdminDashboard = () => {
       return;
     }
 
-    // ✅ Fetch orders from Firestore safely
     const fetchOrders = async () => {
       try {
         const ordersRef = collection(db, "orders");
@@ -29,6 +28,7 @@ const AdminDashboard = () => {
           ...doc.data(),
         }));
         setOrders(orderList);
+        setFilteredOrders(orderList);
       } catch (err) {
         console.error("❌ Failed to fetch orders:", err);
       } finally {
@@ -44,6 +44,20 @@ const AdminDashboard = () => {
     navigate("/");
   };
 
+  const handleSearchChange = (e) => {
+    const value = e.target.value.trim().toUpperCase();
+    setSearchOrderId(value);
+    if (value === "") {
+      setFilteredOrders(orders);
+    } else {
+      setFilteredOrders(
+        orders.filter((order) =>
+          order.orderId?.toUpperCase().includes(value)
+        )
+      );
+    }
+  };
+
   return (
     <div className="p-4 max-w-5xl mx-auto">
       <div className="flex justify-between items-center mb-6">
@@ -56,14 +70,26 @@ const AdminDashboard = () => {
         </button>
       </div>
 
+      <input
+        type="text"
+        placeholder="Search by Order ID"
+        value={searchOrderId}
+        onChange={handleSearchChange}
+        className="w-full mb-6 px-4 py-2 border rounded shadow-sm"
+      />
+
       {loading ? (
         <p>Loading orders...</p>
-      ) : orders.length === 0 ? (
+      ) : filteredOrders.length === 0 ? (
         <p>No orders found.</p>
       ) : (
         <div className="space-y-4">
-          {orders.map((order) => (
-            <div key={order.id} className="border p-4 rounded shadow bg-white">
+          {filteredOrders.map((order, index) => (
+            <div
+              key={order.id}
+              className="border p-4 rounded shadow bg-white"
+            >
+              <p><strong>S.No:</strong> {index + 1}</p>
               <p><strong>Order ID:</strong> {order.orderId}</p>
               <p><strong>Name:</strong> {order.userDetails.name}</p>
               <p><strong>Phone:</strong> {order.userDetails.phone}</p>
@@ -71,8 +97,8 @@ const AdminDashboard = () => {
               <p><strong>Total:</strong> ₹{order.totalAmount.toFixed(2)}</p>
 
               <ul className="mt-2 list-disc ml-5 text-sm">
-                {order.cartItems.map((item, index) => (
-                  <li key={index}>
+                {order.cartItems.map((item, idx) => (
+                  <li key={idx}>
                     {item.name} × {item.quantity} = ₹
                     {(item.price * item.quantity).toFixed(2)}
                   </li>
