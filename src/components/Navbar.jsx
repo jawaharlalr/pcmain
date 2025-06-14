@@ -10,7 +10,7 @@ const Navbar = () => {
   const { cart } = useContext(CartContext);
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const uniqueCategories = [...new Set(products.map(p => p.category))];
+  const uniqueCategories = [...new Set(products.map((p) => p.category))];
 
   return (
     <div className="sticky top-0 z-50 w-full border-b bg-white">
@@ -58,7 +58,9 @@ const Navbar = () => {
 
       <div
         className={`md:flex md:justify-center space-x-6 text-sm font-medium py-2 ${
-          mobileMenuOpen ? "block px-4 space-y-2 md:space-y-0 md:px-0" : "hidden md:flex"
+          mobileMenuOpen
+            ? "block px-4 space-y-2 md:space-y-0 md:px-0"
+            : "hidden md:flex"
         }`}
       >
         <Link to="/" className="block py-2 hover:text-red-600">
@@ -95,6 +97,11 @@ const Navbar = () => {
 
         <Link to="/contact" className="block py-2 hover:text-red-600">
           CONTACT US
+        </Link>
+
+        {/* ✅ New "My Orders" Link */}
+        <Link to="/my-orders" className="block py-2 hover:text-red-600">
+          MY ORDERS
         </Link>
       </div>
     </div>

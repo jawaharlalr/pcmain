@@ -18,7 +18,7 @@ const CheckoutPage = () => {
   const [orderId, setOrderId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
-  const [orderPlaced, setOrderPlaced] = useState(false); // ✅ new state
+  const [orderPlaced, setOrderPlaced] = useState(false);
 
   const totalAmount = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -64,6 +64,7 @@ const CheckoutPage = () => {
         },
         createdAt: Timestamp.now(),
         orderId: orderId,
+        userKey: formData.phone,
       };
 
       const docRef = await addDoc(collection(db, "orders"), firebaseOrder);
@@ -73,7 +74,7 @@ const CheckoutPage = () => {
       localStorage.removeItem("cartItems");
 
       setIsLoading(false);
-      setOrderPlaced(true); // ✅ show success block
+      setOrderPlaced(true);
     } catch (err) {
       console.error(err);
       setError("Something went wrong while placing your order.");
@@ -83,12 +84,13 @@ const CheckoutPage = () => {
 
   return (
     <div className="max-w-2xl mx-auto py-10 px-4">
-      {/* ✅ Order Success Message */}
       {orderPlaced ? (
         <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-5 rounded shadow">
           ✅ <strong>Order Placed Successfully!</strong><br />
-          Your Order ID: <code>{orderId}</code><br />
-          We will contact you soon via WhatsApp or phone.
+          <div className="mt-2">
+            <strong>Order ID:</strong> <code>{orderId}</code><br />
+            We will contact you soon via WhatsApp or phone.
+          </div>
         </div>
       ) : !showSummary ? (
         <>
@@ -119,7 +121,6 @@ const CheckoutPage = () => {
               onChange={handleChange}
               className="w-full border px-4 py-2 rounded"
             />
-
             {error && <p className="text-red-600">{error}</p>}
 
             <button
