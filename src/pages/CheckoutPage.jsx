@@ -90,6 +90,7 @@ const CheckoutPage = () => {
           <div className="mt-2">
             <strong>Order ID:</strong> <code>{orderId}</code><br />
             We will contact you soon via WhatsApp or phone.
+            If You Have Any Modification ContactUs.
           </div>
         </div>
       ) : !showSummary ? (
