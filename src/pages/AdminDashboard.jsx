@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
-import {
-  collection,
-  getDocs,
-  query,
-  orderBy,
-  doc,
-  updateDoc,
-} from "firebase/firestore";
+import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
@@ -67,22 +60,6 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleDeliveryChange = async (orderId, newMethod) => {
-    try {
-      const ref = doc(db, "orders", orderId);
-      await updateDoc(ref, { deliveryMethod: newMethod });
-      setFilteredOrders((prev) =>
-        prev.map((order) =>
-          order.id === orderId
-            ? { ...order, deliveryMethod: newMethod }
-            : order
-        )
-      );
-    } catch (error) {
-      console.error("Failed to update delivery method:", error);
-    }
-  };
-
   const generateInvoice = (order) => {
     const doc = new jsPDF();
     const now = new Date();
@@ -99,6 +76,7 @@ const AdminDashboard = () => {
     doc.text("Pallikaranai, Chennai, Tamil Nadu 600100", 14, 31);
     doc.text("Phone: 9884609789", 14, 36);
 
+    // Order Info
     doc.setFont("helvetica", "bold");
     doc.setFontSize(12);
     doc.text("Order Receipt", 14, 46);
@@ -107,6 +85,7 @@ const AdminDashboard = () => {
     doc.text(`Order ID: ${order.orderId}`, 14, 52);
     doc.text(`Date: ${date}  Time: ${time}`, 14, 57);
 
+    // Customer Info
     doc.setFont("helvetica", "bold");
     doc.text("Customer Information", 14, 65);
     doc.setFont("helvetica", "normal");
@@ -114,6 +93,7 @@ const AdminDashboard = () => {
     doc.text(`Phone: ${order.userDetails.phone}`, 14, 75);
     doc.text(`Address: ${order.userDetails.address}`, 14, 80);
 
+    // Table Body
     const tableBody = order.cartItems.map((item, index) => [
       index + 1,
       item.name,
@@ -133,6 +113,7 @@ const AdminDashboard = () => {
 
     const finalY = doc.lastAutoTable.finalY || 120;
 
+    // Total
     doc.setFont("helvetica", "bold");
     doc.text(
       `Total Amount: Rs. ${order.totalAmount.toFixed(2)}`,
@@ -140,6 +121,7 @@ const AdminDashboard = () => {
       finalY + 10
     );
 
+    // Footer
     doc.setFont("helvetica", "normal");
     doc.text(
       "Thank you for shopping with Pon Crackers Shop!",
@@ -187,19 +169,6 @@ const AdminDashboard = () => {
               <p><strong>Phone:</strong> {order.userDetails.phone}</p>
               <p><strong>Address:</strong> {order.userDetails.address}</p>
               <p><strong>Total:</strong> ₹{order.totalAmount.toFixed(2)}</p>
-
-              <div className="my-2">
-                <label className="mr-2 font-semibold">Delivery Method:</label>
-                <select
-                  value={order.deliveryMethod || ""}
-                  onChange={(e) => handleDeliveryChange(order.id, e.target.value)}
-                  className="border px-2 py-1 rounded"
-                >
-                  <option value="">Select</option>
-                  <option value="Pickup">Pickup</option>
-                  <option value="Delivery">Delivery</option>
-                </select>
-              </div>
 
               <ul className="mt-2 list-disc ml-5 text-sm">
                 {order.cartItems.map((item, idx) => (

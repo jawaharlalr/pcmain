@@ -11,15 +11,19 @@ const Navbar = () => {
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
-  const handleSearch = () => {
+  const handleSearch = (e) => {
+    e.preventDefault();
     if (searchTerm.trim()) {
-      navigate(`/products?search=${encodeURIComponent(searchTerm)}`);
+      navigate(`/products?search=${encodeURIComponent(searchTerm.trim())}`);
+      setSearchTerm("");
+      setMobileMenuOpen(false);
     }
   };
 
   return (
     <div className="sticky top-0 z-50 w-full border-b bg-white">
       <div className="flex items-center justify-between p-3 px-4">
+        {/* Logo and menu toggle */}
         <div className="flex items-center space-x-3">
           <button
             className="md:hidden"
@@ -36,22 +40,28 @@ const Navbar = () => {
           </Link>
         </div>
 
-        <div className="hidden md:flex w-1/2 border rounded overflow-hidden">
+        {/* Desktop search */}
+        <form
+          onSubmit={handleSearch}
+          className="hidden md:flex w-1/2 border rounded overflow-hidden"
+        >
           <input
             type="text"
-            placeholder="Search"
+            placeholder="Search products..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full px-4 py-2 outline-none"
           />
           <button
+            type="submit"
             className="bg-gray-900 text-white px-4 flex items-center"
-            onClick={handleSearch}
           >
-            <Search size={16} className="mr-1" /> Search
+            <Search size={16} className="mr-1" />
+            Search
           </button>
-        </div>
+        </form>
 
+        {/* Cart */}
         <Link
           to="/cart"
           className="relative flex items-center border px-4 py-2 rounded"
@@ -67,7 +77,29 @@ const Navbar = () => {
         </Link>
       </div>
 
-      {/* Navigation Menu */}
+      {/* Mobile menu + search */}
+      {mobileMenuOpen && (
+        <div className="md:hidden px-4 pb-4 space-y-3">
+          <form onSubmit={handleSearch} className="flex border rounded overflow-hidden">
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full px-4 py-2 outline-none"
+            />
+            <button
+              type="submit"
+              className="bg-gray-900 text-white px-4 flex items-center"
+            >
+              <Search size={16} className="mr-1" />
+              Search
+            </button>
+          </form>
+        </div>
+      )}
+
+      {/* Navigation links */}
       <div
         className={`md:flex md:justify-center space-x-6 text-sm font-medium py-2 ${
           mobileMenuOpen
@@ -78,19 +110,15 @@ const Navbar = () => {
         <Link to="/" className="block py-2 hover:text-red-600" onClick={() => setMobileMenuOpen(false)}>
           HOME
         </Link>
-
         <Link to="/products" className="block py-2 hover:text-red-600" onClick={() => setMobileMenuOpen(false)}>
           PRODUCTS
         </Link>
-
         <Link to="/contact" className="block py-2 hover:text-red-600" onClick={() => setMobileMenuOpen(false)}>
           CONTACT US
         </Link>
-
         <Link to="/my-orders" className="block py-2 hover:text-red-600" onClick={() => setMobileMenuOpen(false)}>
           MY ORDERS
         </Link>
-
         <a
           href="/pricelist-2025.pdf"
           download

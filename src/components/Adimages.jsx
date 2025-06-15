@@ -41,6 +41,13 @@ function Advertisement() {
         }`}
       />
 
+      {/* 🔽 Text overlay for adimg4 */}
+      {images[currentIndex] === adimg4 && (
+        <div className="absolute bottom-4 left-4 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded shadow">
+          *We use this logo only for branding
+        </div>
+      )}
+
       {images.length > 1 && (
         <>
           {/* Left Arrow */}
