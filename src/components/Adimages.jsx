@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import adimg1 from "../assets/adimg/adimg1.png";
-import adimg2 from "../assets/adimg/adimg2.png";
-import adimg3 from "../assets/adimg/adimg3.png";
+import adimg4 from "../assets/adimg/adimg4.png";
 
-const images = [adimg1, adimg2, adimg3];
+const images = [adimg4];
+
 function Advertisement() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [fade, setFade] = useState(true);
@@ -26,10 +25,10 @@ function Advertisement() {
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      nextImage();
-    }, 3000);
-    return () => clearInterval(interval);
+    if (images.length > 1) {
+      const interval = setInterval(nextImage, 3000);
+      return () => clearInterval(interval);
+    }
   }, []);
 
   return (
@@ -42,21 +41,25 @@ function Advertisement() {
         }`}
       />
 
-      {/* Left Arrow */}
-      <button
-        onClick={prevImage}
-        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full z-10"
-      >
-        <FaArrowLeft />
-      </button>
+      {images.length > 1 && (
+        <>
+          {/* Left Arrow */}
+          <button
+            onClick={prevImage}
+            className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full z-10"
+          >
+            <FaArrowLeft />
+          </button>
 
-      {/* Right Arrow */}
-      <button
-        onClick={nextImage}
-        className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full z-10"
-      >
-        <FaArrowRight />
-      </button>
+          {/* Right Arrow */}
+          <button
+            onClick={nextImage}
+            className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full z-10"
+          >
+            <FaArrowRight />
+          </button>
+        </>
+      )}
     </div>
   );
 }

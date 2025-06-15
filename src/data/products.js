@@ -1,46 +1,75 @@
 const products = [
   {
     id: 1,
-    name: "100 Wala",
+    name: "BOBY GOLD SPARKLERS 7CM (10pcs) (1Box)",
     price: 120,
-    category: "100wala", // ✅ Category added
-    image: "/images/100wala.jpg",
+    category: "sparklers", // ✅ Match Home category key
+    image: "/images/sp7cmgold.jpg",
   },
   {
     id: 2,
-    name: "Bijili Crackers",
-    price: 60,
-    category: "bijili", // ✅ Category added
-    image: "/images/bijili.jpg",
+    name: "BOBBY CRACKLINGS SPARKLERS 7CM(10PCS) (1Box)",
+    price: 120,
+    category: "sparklers", // ✅ Match Home category key
+    image: "/images/sp7cmcrack.jpg",
   },
   {
     id: 3,
-    name: "Rocket Pack",
-    price: 150,
-    category: "rocket", // ✅ Category added
-    image: "/images/rocket.jpg",
+    name: "12CM 4 COLOUR SPARKLERS (10PCS) (1Box)",
+    price: 120,
+    category: "sparklers", // ✅ Match Home category key
+    image: "/images/12cm4.jpg",
   },
   {
     id: 4,
-    name: "Flowerpot Set",
-    price: 200,
-    category: "flowerpot",
-    image: "/images/flowerpot.jpg",
+    name: "12CM 4 COLOUR SPARKLERS (10PCS) (1Box)",
+    price: 120,
+    category: "sparklers", // ✅ Match Home category key
+    image: "/images/15cmgold.jpg",
   },
   {
     id: 5,
-    name: "Lakshmi Bomb",
-    price: 80,
-    category: "bijili",
-    image: "/images/lakshmi-bomb.jpg",
+    name: "CRACKLING SPARKLERS 15CM(10PCS) (1Box)",
+    price: 120,
+    category: "sparklers", // ✅ Match Home category key
+    image: "/images/15cmcrack.jpg",
   },
   {
     id: 6,
-    name: "5 Sound Rocket",
-    price: 180,
-    category: "rocket",
-    image: "/images/5sound-rocket.jpg",
+    name: "GOLD SPARKLERS 30CM(5PCS) (1Box)",
+    price: 120,
+    category: "sparklers", // ✅ Match Home category key
+    image: "/images/30cmgold.jpg",
   },
+  {
+    id: 7,
+    name: "CRACKLING SPARKLERS 30CM(5PCS) (1Box)",
+    price: 120,
+    category: "sparklers", // ✅ Match Home category key
+    image: "/images/30cmcrack.jpg",
+  },
+  {
+    id: 8,
+    name: "RED SPARKLERS 15CM(10PCS) (1Box)",
+    price: 120,
+    category: "sparklers", // ✅ Match Home category key
+    image: "/images/15cmred.jpg",
+  },
+  {
+    id: 9,
+    name: "LEMON TREE SPARKLERS 15CM(10PCS) (1Box)",
+    price: 120,
+    category: "sparklers", // ✅ Match Home category key
+    image: "/images/15cmlemon.jpg",
+  },
+  {
+    id: 9,
+    name: "LAVENDER SPARKLERS 15CM(10PCS) (1Box)",
+    price: 120,
+    category: "sparklers", // ✅ Match Home category key
+    image: "/images/15cmlav.jpg",
+  },
+  
 ];
 
 export default products;

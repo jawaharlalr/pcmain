@@ -70,6 +70,9 @@ const MyOrders = () => {
               <p><strong>Phone:</strong> {order.userDetails.phone}</p>
               <p><strong>Address:</strong> {order.userDetails.address}</p>
               <p><strong>Total:</strong> ₹{order.totalAmount}</p>
+              {order.deliveryMethod && (
+                <p><strong>Delivery Method:</strong> {order.deliveryMethod}</p>
+              )}
 
               <ul className="list-disc ml-5 mt-2 text-sm">
                 {order.cartItems.map((item, idx) => (

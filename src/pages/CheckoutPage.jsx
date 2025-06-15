@@ -1,12 +1,10 @@
 import React, { useContext, useState } from "react";
 import { CartContext } from "../context/CartContext";
-import { useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 
 const CheckoutPage = () => {
   const { cart, clearCart } = useContext(CartContext);
-  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     fullName: "",

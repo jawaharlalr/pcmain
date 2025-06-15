@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  orderBy,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 const AdminDashboard = () => {
   const [orders, setOrders] = useState([]);
@@ -58,6 +67,89 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleDeliveryChange = async (orderId, newMethod) => {
+    try {
+      const ref = doc(db, "orders", orderId);
+      await updateDoc(ref, { deliveryMethod: newMethod });
+      setFilteredOrders((prev) =>
+        prev.map((order) =>
+          order.id === orderId
+            ? { ...order, deliveryMethod: newMethod }
+            : order
+        )
+      );
+    } catch (error) {
+      console.error("Failed to update delivery method:", error);
+    }
+  };
+
+  const generateInvoice = (order) => {
+    const doc = new jsPDF();
+    const now = new Date();
+    const date = now.toLocaleDateString();
+    const time = now.toLocaleTimeString();
+
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text("PON CRACKERS SHOP", 14, 20);
+
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    doc.text("136, Velachery Rd, MGR Nagar,", 14, 26);
+    doc.text("Pallikaranai, Chennai, Tamil Nadu 600100", 14, 31);
+    doc.text("Phone: 9884609789", 14, 36);
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(12);
+    doc.text("Order Receipt", 14, 46);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.text(`Order ID: ${order.orderId}`, 14, 52);
+    doc.text(`Date: ${date}  Time: ${time}`, 14, 57);
+
+    doc.setFont("helvetica", "bold");
+    doc.text("Customer Information", 14, 65);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Name: ${order.userDetails.name}`, 14, 70);
+    doc.text(`Phone: ${order.userDetails.phone}`, 14, 75);
+    doc.text(`Address: ${order.userDetails.address}`, 14, 80);
+
+    const tableBody = order.cartItems.map((item, index) => [
+      index + 1,
+      item.name,
+      `${item.quantity} Box`,
+      `Rs. ${item.price.toFixed(2)}`,
+      `Rs. ${(item.price * item.quantity).toFixed(2)}`
+    ]);
+
+    autoTable(doc, {
+      startY: 90,
+      head: [["S.No", "Product", "Qty", "Price", "Total"]],
+      body: tableBody,
+      theme: "grid",
+      headStyles: { fillColor: [220, 53, 69] },
+      styles: { fontSize: 10 },
+    });
+
+    const finalY = doc.lastAutoTable.finalY || 120;
+
+    doc.setFont("helvetica", "bold");
+    doc.text(
+      `Total Amount: Rs. ${order.totalAmount.toFixed(2)}`,
+      14,
+      finalY + 10
+    );
+
+    doc.setFont("helvetica", "normal");
+    doc.text(
+      "Thank you for shopping with Pon Crackers Shop!",
+      14,
+      finalY + 20
+    );
+
+    doc.save(`${order.orderId}-invoice.pdf`);
+  };
+
   return (
     <div className="p-4 max-w-5xl mx-auto">
       <div className="flex justify-between items-center mb-6">
@@ -96,6 +188,19 @@ const AdminDashboard = () => {
               <p><strong>Address:</strong> {order.userDetails.address}</p>
               <p><strong>Total:</strong> ₹{order.totalAmount.toFixed(2)}</p>
 
+              <div className="my-2">
+                <label className="mr-2 font-semibold">Delivery Method:</label>
+                <select
+                  value={order.deliveryMethod || ""}
+                  onChange={(e) => handleDeliveryChange(order.id, e.target.value)}
+                  className="border px-2 py-1 rounded"
+                >
+                  <option value="">Select</option>
+                  <option value="Pickup">Pickup</option>
+                  <option value="Delivery">Delivery</option>
+                </select>
+              </div>
+
               <ul className="mt-2 list-disc ml-5 text-sm">
                 {order.cartItems.map((item, idx) => (
                   <li key={idx}>
@@ -104,6 +209,13 @@ const AdminDashboard = () => {
                   </li>
                 ))}
               </ul>
+
+              <button
+                onClick={() => generateInvoice(order)}
+                className="mt-4 bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+              >
+                Generate Invoice
+              </button>
             </div>
           ))}
         </div>

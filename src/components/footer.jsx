@@ -1,5 +1,5 @@
 import React from "react";
-import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
+
 
 function Footer() {
   const handleAdminLogin = () => {
@@ -32,11 +32,7 @@ function Footer() {
           © {new Date().getFullYear()} Pon Crackers Shop. All rights reserved.
         </p>
 
-        <div className="flex gap-4 mt-2">
-          <FaFacebookF className="cursor-pointer hover:text-yellow-400" />
-          <FaTwitter className="cursor-pointer hover:text-yellow-400" />
-          <FaInstagram className="cursor-pointer hover:text-yellow-400" />
-        </div>
+        
       </div>
     </footer>
   );
