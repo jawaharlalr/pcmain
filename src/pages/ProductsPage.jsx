@@ -11,7 +11,9 @@ const ProductsPage = () => {
   const categoryFilter = queryParams.get("category");
 
   const filteredProducts = categoryFilter
-    ? products.filter((p) => p.category.toLowerCase() === categoryFilter.toLowerCase())
+    ? products.filter(
+        (p) => p.category.toLowerCase() === categoryFilter.toLowerCase()
+      )
     : products;
 
   const getQuantity = (productId) => {
@@ -38,8 +40,15 @@ const ProductsPage = () => {
             return (
               <div
                 key={product.id}
-                className="border rounded-lg p-4 shadow hover:shadow-lg transition"
+                className="relative border rounded-lg p-4 shadow hover:shadow-lg transition-transform duration-300 transform hover:scale-105"
               >
+                {/* ✅ New Arrival Tag */}
+                {product.isNew && (
+                  <span className="absolute top-2 left-2 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded animate-pulse">
+                    NEW ARRIVAL
+                  </span>
+                )}
+
                 <img
                   src={product.image}
                   alt={product.name}
@@ -51,10 +60,7 @@ const ProductsPage = () => {
                 {quantity > 0 ? (
                   <div className="flex items-center gap-3">
                     <button
-                      onClick={() => {
-                        const newQty = quantity - 1;
-                        updateQuantity(product.id, newQty);
-                      }}
+                      onClick={() => updateQuantity(product.id, quantity - 1)}
                       className="bg-gray-200 px-3 py-1 rounded text-lg"
                     >
                       -
@@ -69,7 +75,7 @@ const ProductsPage = () => {
                   </div>
                 ) : (
                   <button
-                    className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                    className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 w-full"
                     onClick={() => handleAddToCart(product)}
                   >
                     Add to Cart

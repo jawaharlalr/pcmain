@@ -10,6 +10,7 @@ const categories = [
     name: "Sparklers",
     display: "Sparklers",
     image: "/images/sparklers.jpg",
+    isNew: true
   },
   {
     name: "Chakkars",

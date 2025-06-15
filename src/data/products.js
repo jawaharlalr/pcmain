@@ -5,6 +5,7 @@ const products = [
     price: 120,
     category: "sparklers", // ✅ Match Home category key
     image: "/images/sp7cmgold.jpg",
+    isNew: true,
   },
   {
     id: 2,
