@@ -30,7 +30,7 @@ const categories = [
   {
     name: "Sound Crackers",
     display: "Sound Crackers",
-    image: "/images/soundcrackers.png",
+    image: "/images/Soundcrackers.png",
   },
   {
     name: "Bijili",
