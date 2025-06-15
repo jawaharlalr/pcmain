@@ -41,16 +41,15 @@ function Advertisement() {
         }`}
       />
 
-      {/* 🔽 Text overlay for adimg4 */}
+      {/* ✅ Clean text, no background, small font on all screens */}
       {images[currentIndex] === adimg4 && (
-        <div className="absolute bottom-4 left-4 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded shadow">
+        <div className="absolute bottom-1 left-1 text-white text-[6px] sm:text-[6px] md:text-[10px] lg:text-[10px]">
           *We use this logo only for branding
         </div>
       )}
 
       {images.length > 1 && (
         <>
-          {/* Left Arrow */}
           <button
             onClick={prevImage}
             className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full z-10"
@@ -58,7 +57,6 @@ function Advertisement() {
             <FaArrowLeft />
           </button>
 
-          {/* Right Arrow */}
           <button
             onClick={nextImage}
             className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full z-10"

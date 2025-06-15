@@ -9,7 +9,6 @@ const loginAdmin = async (email, password) => {
 
     if (user.email === "poncrackers25@gmail.com") {
       console.log("✅ Admin logged in:", user.email);
-      alert(`Welcome, ${user.email}`);
       return user;
     } else {
       alert("Access denied: Not an admin.");

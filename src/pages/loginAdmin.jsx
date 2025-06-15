@@ -1,7 +1,7 @@
 // src/pages/LoginAdmin.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import loginAdmin from "../utils/loginAdmin"; // ✅ Ensure it's default export
+import loginAdmin from "../utils/loginAdmin";
 
 const LoginAdmin = () => {
   const [email, setEmail] = useState("");
@@ -10,7 +10,7 @@ const LoginAdmin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const user = await loginAdmin(email, password); // ✅ Don't pass navigate
+    const user = await loginAdmin(email, password);
     if (user && user.email === "poncrackers25@gmail.com") {
       localStorage.setItem("isAdmin", "true");
       navigate("/admin-dashboard");
